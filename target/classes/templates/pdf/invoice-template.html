@@ -1,0 +1,570 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title th:text="'Invoice ' + ${invoice.invoiceNumber}">Invoice</title>
+    <style type="text/css">
+        @page {
+            size: A4 portrait;
+            margin: 14mm 14mm 14mm 14mm;
+        }
+
+        body {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            font-size: 12px;
+            line-height: 1.5;
+            color: #2B2D42;
+            margin: 0;
+            padding: 0;
+            background-color: #FAF7F2;
+        }
+
+        .invoice-wrapper {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .header-table, .info-table, .items-table, .totals-table, .footer-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 16px;
+        }
+
+        /* ----------------------------------------------------
+           TEMPLATE 1: CLASSIC GHIBLI PARCHMENT
+        ---------------------------------------------------- */
+        .template-1 {
+            background-color: #FAF7F2;
+            border: 3px double #2B2D42;
+            padding: 20px;
+        }
+        .template-1 .banner-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2B2D42;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .template-1 .tagline {
+            font-size: 11px;
+            color: #5B8266;
+            font-style: italic;
+        }
+        .template-1 .section-title {
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            color: #2B2D42;
+            border-bottom: 2px solid #2B2D42;
+            padding-bottom: 3px;
+            margin-bottom: 6px;
+        }
+        .template-1 .items-table th {
+            background-color: #F4EAD4;
+            color: #2B2D42;
+            border: 2px solid #2B2D42;
+            padding: 8px 6px;
+            font-weight: bold;
+            font-size: 11px;
+            text-align: left;
+        }
+        .template-1 .items-table td {
+            border: 1px solid #2B2D42;
+            padding: 7px 6px;
+            font-size: 11px;
+            background-color: #FFFFFF;
+        }
+        .template-1 .totals-box {
+            border: 2px solid #2B2D42;
+            background-color: #F4EAD4;
+            padding: 8px;
+        }
+
+        /* ----------------------------------------------------
+           TEMPLATE 2: VINTAGE LEDGER
+        ---------------------------------------------------- */
+        .template-2 {
+            background-color: #F9FBF9;
+            border: 2px solid #354F52;
+            padding: 18px;
+        }
+        .template-2 .banner-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2F3E46;
+            font-family: 'Courier', monospace;
+            border-bottom: 2px solid #354F52;
+            padding-bottom: 4px;
+        }
+        .template-2 .items-table th {
+            background-color: #E2ECE5;
+            color: #2F3E46;
+            border-top: 2px solid #354F52;
+            border-bottom: 2px solid #354F52;
+            border-left: 1px solid #CAD2C5;
+            border-right: 1px solid #CAD2C5;
+            padding: 7px;
+            font-family: 'Courier', monospace;
+            font-size: 11px;
+        }
+        .template-2 .items-table td {
+            border: 1px solid #CAD2C5;
+            padding: 6px;
+            font-family: 'Courier', monospace;
+            font-size: 11px;
+            background-color: #FAFDFB;
+        }
+        .template-2 .totals-box {
+            border: 2px solid #354F52;
+            background-color: #E2ECE5;
+            padding: 6px;
+        }
+
+        /* ----------------------------------------------------
+           TEMPLATE 3: COZY COTTAGE
+        ---------------------------------------------------- */
+        .template-3 {
+            background-color: #FCFDF9;
+            border: 2px solid #5B8266;
+            padding: 18px;
+        }
+        .template-3 .banner-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #5B8266;
+            letter-spacing: 0.5px;
+        }
+        .template-3 .section-title {
+            font-size: 12px;
+            font-weight: bold;
+            color: #5B8266;
+            border-bottom: 2px dotted #5B8266;
+            padding-bottom: 3px;
+        }
+        .template-3 .items-table th {
+            background-color: #5B8266;
+            color: #FFFFFF;
+            padding: 8px 6px;
+            font-size: 11px;
+            border: 1px solid #5B8266;
+        }
+        .template-3 .items-table td {
+            border-bottom: 1px solid #D2DFD6;
+            border-left: 1px solid #E8F0EA;
+            border-right: 1px solid #E8F0EA;
+            padding: 7px 6px;
+            font-size: 11px;
+        }
+        .template-3 .totals-box {
+            border: 2px solid #5B8266;
+            background-color: #F1F6F2;
+            padding: 8px;
+        }
+
+        /* ----------------------------------------------------
+           TEMPLATE 4: TOKYO MONOSPACE
+        ---------------------------------------------------- */
+        .template-4 {
+            background-color: #FFFFFF;
+            border: 2px dashed #2B2D42;
+            padding: 18px;
+            font-family: 'Courier', monospace;
+        }
+        .template-4 .banner-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2B2D42;
+            letter-spacing: 2px;
+        }
+        .template-4 .items-table th {
+            background-color: #EEEEEE;
+            color: #000000;
+            border-top: 1px dashed #2B2D42;
+            border-bottom: 1px dashed #2B2D42;
+            padding: 7px 5px;
+            font-size: 11px;
+        }
+        .template-4 .items-table td {
+            border-bottom: 1px dotted #888888;
+            padding: 6px 5px;
+            font-size: 10px;
+        }
+        .template-4 .totals-box {
+            border: 1px dashed #2B2D42;
+            padding: 8px;
+            background-color: #FDFDFD;
+        }
+
+        /* ----------------------------------------------------
+           TEMPLATE 5: SUNSET TERRACOTTA
+        ---------------------------------------------------- */
+        .template-5 {
+            background-color: #FFFDF9;
+            border: 3px solid #D46A43;
+            padding: 18px;
+        }
+        .template-5 .banner-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #D46A43;
+            letter-spacing: 1px;
+        }
+        .template-5 .items-table th {
+            background-color: #D46A43;
+            color: #FFFFFF;
+            padding: 8px 6px;
+            font-size: 11px;
+            border: 1px solid #D46A43;
+        }
+        .template-5 .items-table td {
+            border: 1px solid #F1D4C9;
+            padding: 7px 6px;
+            font-size: 11px;
+        }
+        .template-5 .totals-box {
+            border: 2px solid #D46A43;
+            background-color: #FDF3EF;
+            padding: 8px;
+        }
+
+        /* ----------------------------------------------------
+           TEMPLATE 6: PASTEL KRAFT
+        ---------------------------------------------------- */
+        .template-6 {
+            background-color: #F4EAD4;
+            border: 3px solid #8D7B68;
+            padding: 18px;
+        }
+        .template-6 .banner-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #594539;
+        }
+        .template-6 .items-table th {
+            background-color: #DECAB3;
+            color: #4A3A2C;
+            border: 1px solid #8D7B68;
+            padding: 8px 6px;
+            font-size: 11px;
+        }
+        .template-6 .items-table td {
+            border: 1px solid #D1BD9F;
+            padding: 7px 6px;
+            background-color: #F9F4EB;
+            font-size: 11px;
+        }
+        .template-6 .totals-box {
+            border: 2px solid #8D7B68;
+            background-color: #DECAB3;
+            padding: 8px;
+        }
+
+        /* ----------------------------------------------------
+           TEMPLATE 7: JAPANESE HANKO STAMP
+        ---------------------------------------------------- */
+        .template-7 {
+            background-color: #FFFFFF;
+            border: 2px solid #1A1A1A;
+            padding: 20px;
+        }
+        .template-7 .banner-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1A1A1A;
+            letter-spacing: 2px;
+        }
+        .template-7 .hanko-seal {
+            border: 3px solid #C82333;
+            color: #C82333;
+            border-radius: 50%;
+            width: 55px;
+            height: 55px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 55px;
+            display: inline-block;
+        }
+        .template-7 .items-table th {
+            border-top: 2px solid #1A1A1A;
+            border-bottom: 2px solid #1A1A1A;
+            padding: 8px 6px;
+            font-size: 11px;
+            background-color: #F8F9FA;
+        }
+        .template-7 .items-table td {
+            border-bottom: 1px solid #CCCCCC;
+            padding: 7px 6px;
+            font-size: 11px;
+        }
+        .template-7 .totals-box {
+            border-top: 2px solid #1A1A1A;
+            border-bottom: 2px solid #1A1A1A;
+            padding: 8px;
+            background-color: #F8F9FA;
+        }
+
+        /* ----------------------------------------------------
+           TEMPLATE 8: ARTISAN BLUEPRINT
+        ---------------------------------------------------- */
+        .template-8 {
+            background-color: #F8FAFC;
+            border: 2px solid #3A506B;
+            padding: 18px;
+        }
+        .template-8 .banner-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #3A506B;
+            letter-spacing: 1px;
+        }
+        .template-8 .items-table th {
+            background-color: #3A506B;
+            color: #FFFFFF;
+            border: 1px solid #3A506B;
+            padding: 8px 6px;
+            font-size: 11px;
+        }
+        .template-8 .items-table td {
+            border: 1px solid #CBD5E1;
+            padding: 7px 6px;
+            font-size: 11px;
+        }
+        .template-8 .totals-box {
+            border: 2px solid #3A506B;
+            background-color: #E2E8F0;
+            padding: 8px;
+        }
+
+        /* ----------------------------------------------------
+           TEMPLATE 9: EDITORIAL NOTEBOOK
+        ---------------------------------------------------- */
+        .template-9 {
+            background-color: #FEFEFA;
+            border-left: 6px solid #C84B31;
+            border-top: 1px solid #D3D3D3;
+            border-right: 1px solid #D3D3D3;
+            border-bottom: 1px solid #D3D3D3;
+            padding: 20px;
+        }
+        .template-9 .banner-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2D4263;
+        }
+        .template-9 .items-table th {
+            border-bottom: 2px solid #C84B31;
+            padding: 8px 6px;
+            font-size: 11px;
+            color: #2D4263;
+        }
+        .template-9 .items-table td {
+            border-bottom: 1px solid #E0E0E0;
+            padding: 7px 6px;
+            font-size: 11px;
+        }
+        .template-9 .totals-box {
+            border: 1px solid #C84B31;
+            background-color: #FDF9F9;
+            padding: 8px;
+        }
+
+        /* ----------------------------------------------------
+           TEMPLATE 10: MODERN MINIMAL CHIC
+        ---------------------------------------------------- */
+        .template-10 {
+            background-color: #FCFAF7;
+            border: 1px solid #111111;
+            padding: 22px;
+        }
+        .template-10 .banner-title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #111111;
+            letter-spacing: 3px;
+        }
+        .template-10 .items-table th {
+            border-top: 2px solid #111111;
+            border-bottom: 1px solid #111111;
+            padding: 9px 6px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .template-10 .items-table td {
+            border-bottom: 1px solid #EEEEEE;
+            padding: 8px 6px;
+            font-size: 11px;
+        }
+        .template-10 .totals-box {
+            border-top: 2px solid #111111;
+            padding: 8px;
+        }
+
+        /* Common status stamp badges */
+        .stamp-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            font-weight: bold;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border: 2px solid;
+        }
+        .stamp-paid {
+            color: #2E7D32;
+            border-color: #2E7D32;
+            background-color: #E8F5E9;
+        }
+        .stamp-unpaid {
+            color: #C62828;
+            border-color: #C62828;
+            background-color: #FFEBEE;
+        }
+        .stamp-draft {
+            color: #E65100;
+            border-color: #E65100;
+            background-color: #FFF3E0;
+        }
+
+        .text-right { text-align: right; }
+        .text-center { text-align: center; }
+        .font-bold { font-weight: bold; }
+        .text-muted { color: #666666; }
+    </style>
+</head>
+<body>
+    <div class="invoice-wrapper" th:classappend="'template-' + ${templateId}">
+        <!-- Top Header: Business info and Invoice Meta -->
+        <table class="header-table">
+            <tr>
+                <td style="width: 60%; vertical-align: top;">
+                    <div class="banner-title" th:text="${user.businessName}">BUSINESS NAME</div>
+                    <div style="font-size: 11px; color: #555555; margin-top: 4px;" th:text="${user.address}">123 Street, City</div>
+                    <div style="font-size: 11px; color: #555555;">
+                        <span th:if="${user.phone}" th:text="'Phone: ' + ${user.phone} + ' | '"></span>
+                        <span th:text="'Email: ' + ${user.email}"></span>
+                    </div>
+                    <div style="font-size: 11px; font-weight: bold; margin-top: 2px;" th:if="${user.gstNumber}">
+                        <span th:text="'GSTIN: ' + ${user.gstNumber}">GSTIN: 27AABCT3518Q1ZY</span>
+                    </div>
+                </td>
+                <td style="width: 40%; vertical-align: top; text-align: right;">
+                    <div style="font-size: 20px; font-weight: bold; letter-spacing: 1px;">TAX INVOICE</div>
+                    <div style="font-size: 13px; font-weight: bold; margin-top: 3px;" th:text="'#' + ${invoice.invoiceNumber}">#INV-001</div>
+                    <div style="margin-top: 8px;">
+                        <span th:if="${#strings.toString(invoice.status) == 'PAID'}" class="stamp-badge stamp-paid">&#x2714; PAID / &#38936;&#21454;&#28168;</span>
+                        <span th:if="${#strings.toString(invoice.status) == 'UNPAID'}" class="stamp-badge stamp-unpaid">&#x2718; UNPAID / &#26410;&#25173;</span>
+                        <span th:if="${#strings.toString(invoice.status) == 'DRAFT'}" class="stamp-badge stamp-draft">&#x270E; DRAFT</span>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Client Bill To & Invoice Dates Info -->
+        <table class="info-table" style="margin-top: 10px;">
+            <tr>
+                <td style="width: 55%; vertical-align: top; padding-right: 15px;">
+                    <div style="font-weight: bold; font-size: 11px; text-transform: uppercase; color: #777777; margin-bottom: 3px;">BILLED TO:</div>
+                    <div style="font-size: 13px; font-weight: bold;" th:text="${client.clientName}">Client Name</div>
+                    <div style="font-size: 11px; color: #444444; margin-top: 2px;" th:text="${client.billingAddress}">Client Address</div>
+                    <div style="font-size: 11px; color: #444444;">
+                        <span th:if="${client.clientPhone}" th:text="'Tel: ' + ${client.clientPhone} + ' | '"></span>
+                        <span th:text="${client.clientEmail}">client@domain.com</span>
+                    </div>
+                    <div style="font-size: 11px; font-weight: bold;" th:if="${client.gstNumber}">
+                        <span th:text="'Client GSTIN: ' + ${client.gstNumber}"></span>
+                    </div>
+                </td>
+                <td style="width: 45%; vertical-align: top;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                        <tr>
+                            <td style="font-weight: bold; padding: 2px 0;">Invoice Date:</td>
+                            <td style="text-align: right; padding: 2px 0;" th:text="${formattedInvoiceDate}">17 Sep 2026</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; padding: 2px 0;">Due Date:</td>
+                            <td style="text-align: right; padding: 2px 0;" th:text="${formattedDueDate}">02 Oct 2026</td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; padding: 2px 0;">Template Style:</td>
+                            <td style="text-align: right; padding: 2px 0;" th:text="${templateName}">Classic Ghibli</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Line Items Table -->
+        <table class="items-table" style="margin-top: 12px;">
+            <thead>
+                <tr>
+                    <th style="width: 8%;" class="text-center">Sr.</th>
+                    <th style="width: 46%;">Item Description</th>
+                    <th style="width: 12%;" class="text-center">Qty</th>
+                    <th style="width: 16%;" class="text-right">Unit Price (&#8377;)</th>
+                    <th style="width: 18%;" class="text-right">Total (&#8377;)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="item, iterStat : ${items}">
+                    <td class="text-center" th:text="${iterStat.count}">1</td>
+                    <td th:text="${item.description}">Item Description</td>
+                    <td class="text-center" th:text="${item.quantity}">1</td>
+                    <td class="text-right" th:text="${#numbers.formatDecimal(item.unitPrice, 1, 2)}">0.00</td>
+                    <td class="text-right font-bold" th:text="${#numbers.formatDecimal(item.itemTotal, 1, 2)}">0.00</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Summary & Totals Calculation Box -->
+        <table class="totals-table">
+            <tr>
+                <td style="width: 55%; vertical-align: top; padding-right: 20px;">
+                    <div th:if="${invoice.notes != null and invoice.notes != ''}">
+                        <div style="font-weight: bold; font-size: 11px; text-transform: uppercase; color: #666666;">Notes &amp; Payment Instructions:</div>
+                        <div style="font-size: 10px; color: #444444; margin-top: 3px; line-height: 1.4;" th:text="${invoice.notes}">Notes content</div>
+                    </div>
+                </td>
+                <td style="width: 45%; vertical-align: top;">
+                    <div class="totals-box">
+                        <table style="width: 100%; border-collapse: collapse; font-size: 11px;">
+                            <tr>
+                                <td style="padding: 3px 0;">Subtotal:</td>
+                                <td style="text-align: right; padding: 3px 0;" th:text="'&#8377; ' + ${#numbers.formatDecimal(invoice.subtotal, 1, 2)}">&#8377; 0.00</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px 0;">CGST (9%):</td>
+                                <td style="text-align: right; padding: 3px 0;" th:text="'&#8377; ' + ${#numbers.formatDecimal(invoice.cgst, 1, 2)}">&#8377; 0.00</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 3px 0;">SGST (9%):</td>
+                                <td style="text-align: right; padding: 3px 0;" th:text="'&#8377; ' + ${#numbers.formatDecimal(invoice.sgst, 1, 2)}">&#8377; 0.00</td>
+                            </tr>
+                            <tr style="border-top: 1px solid #2B2D42; font-weight: bold; font-size: 13px;">
+                                <td style="padding: 6px 0 2px 0;">Grand Total:</td>
+                                <td style="text-align: right; padding: 6px 0 2px 0;" th:text="'&#8377; ' + ${#numbers.formatDecimal(invoice.grandTotal, 1, 2)}">&#8377; 0.00</td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <!-- Sign-off & Seal Footer -->
+        <table class="footer-table" style="margin-top: 25px;">
+            <tr>
+                <td style="width: 60%; vertical-align: bottom; font-size: 10px; color: #777777;">
+                    <div>This is a computer generated invoice powered by Multi-Template Invoice Studio.</div>
+                    <div style="margin-top: 2px;">Thank you for your business! &#127807;</div>
+                </td>
+                <td style="width: 40%; vertical-align: bottom; text-align: center;">
+                    <div style="border-bottom: 1px dashed #2B2D42; width: 140px; margin: 0 auto 5px auto;"></div>
+                    <div style="font-size: 10px; font-weight: bold;" th:text="'Authorized Signatory for ' + ${user.businessName}">Authorized Signatory</div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

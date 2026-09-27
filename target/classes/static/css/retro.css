@@ -1,0 +1,534 @@
+/* ===================================================================
+   RETRO HAND-DRAWN ANIME & STUDIO GHIBLI CEL-SHADED DESIGN SYSTEM
+   Palette:
+   - Parchment Background: #FAF7F2, #F4EAD4
+   - Charcoal Ink: #2B2D42
+   - Matcha Green: #5B8266
+   - Terracotta Rust: #D46A43
+   - Retro Denim Blue: #3A506B
+   - Mustard / Ochre: #E9C46A
+   =================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Space+Mono:wght@400;700&display=swap');
+
+:root {
+  --bg-parchment: #FAF7F2;
+  --card-parchment: #F4EAD4;
+  --ink-charcoal: #2B2D42;
+  --matcha: #5B8266;
+  --terracotta: #D46A43;
+  --denim: #3A506B;
+  --mustard: #E9C46A;
+  --border-width: 2px;
+  --shadow-offset: 4px;
+}
+
+body {
+  background-color: var(--bg-parchment);
+  color: var(--ink-charcoal);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-image: radial-gradient(#d6cdc3 1px, transparent 1px);
+  background-size: 24px 24px;
+  min-height: 100vh;
+}
+
+.font-heading {
+  font-family: 'Gaegu', cursive, sans-serif;
+}
+
+.font-display {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.font-mono {
+  font-family: 'Space Mono', monospace;
+}
+
+/* Hard-edged retro card */
+.retro-card {
+  background-color: #FFFFFF;
+  border: var(--border-width) solid var(--ink-charcoal);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--ink-charcoal);
+  border-radius: 8px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.retro-card-parchment {
+  background-color: var(--card-parchment);
+  border: var(--border-width) solid var(--ink-charcoal);
+  box-shadow: var(--shadow-offset) var(--shadow-offset) 0px var(--ink-charcoal);
+  border-radius: 8px;
+}
+
+.retro-card-sm {
+  border: var(--border-width) solid var(--ink-charcoal);
+  box-shadow: 2px 2px 0px var(--ink-charcoal);
+  border-radius: 6px;
+}
+
+/* Retro buttons with tactile push-in effect */
+.retro-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border: var(--border-width) solid var(--ink-charcoal);
+  box-shadow: 3px 3px 0px var(--ink-charcoal);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  user-select: none;
+  font-size: 0.95rem;
+  padding: 0.5rem 1rem;
+}
+
+.retro-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px var(--ink-charcoal);
+}
+
+.retro-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px var(--ink-charcoal);
+}
+
+.retro-btn-sm {
+  padding: 0.25rem 0.65rem;
+  font-size: 0.82rem;
+  box-shadow: 2px 2px 0px var(--ink-charcoal);
+}
+
+.retro-btn-sm:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--ink-charcoal);
+}
+
+.retro-btn-primary {
+  background-color: var(--denim);
+  color: #FFFFFF;
+}
+
+.retro-btn-matcha {
+  background-color: var(--matcha);
+  color: #FFFFFF;
+}
+
+.retro-btn-terracotta {
+  background-color: var(--terracotta);
+  color: #FFFFFF;
+}
+
+.retro-btn-mustard {
+  background-color: var(--mustard);
+  color: var(--ink-charcoal);
+}
+
+.retro-btn-outline {
+  background-color: #FFFFFF;
+  color: var(--ink-charcoal);
+}
+
+.retro-btn-outline:hover {
+  background-color: var(--card-parchment);
+}
+
+/* Inputs */
+.retro-input {
+  background-color: #FFFFFF;
+  border: var(--border-width) solid var(--ink-charcoal);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.9rem;
+  color: var(--ink-charcoal);
+  box-shadow: 2px 2px 0px rgba(43, 45, 66, 0.2);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.retro-input:focus {
+  border-color: var(--denim);
+  box-shadow: 3px 3px 0px var(--denim);
+}
+
+/* Badges */
+.retro-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.25rem 0.6rem;
+  border: var(--border-width) solid var(--ink-charcoal);
+  border-radius: 4px;
+}
+
+.retro-badge-paid {
+  background-color: #E8F5E9;
+  color: #2E7D32;
+  border-color: #2E7D32;
+}
+
+.retro-badge-unpaid {
+  background-color: #FFEBEE;
+  color: #C62828;
+  border-color: #C62828;
+}
+
+.retro-badge-draft {
+  background-color: #FFF3E0;
+  color: #E65100;
+  border-color: #E65100;
+}
+
+/* Navigation tabs */
+.retro-tab {
+  border: var(--border-width) solid var(--ink-charcoal);
+  background-color: #FAF7F2;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px 6px 0 0;
+  cursor: pointer;
+  box-shadow: 2px -2px 0px rgba(43, 45, 66, 0.15);
+  margin-right: 4px;
+  transition: all 0.1s ease;
+}
+
+.retro-tab.active {
+  background-color: #FFFFFF;
+  border-bottom-color: #FFFFFF;
+  transform: translateY(2px);
+  box-shadow: 0 -3px 0px var(--denim);
+}
+
+/* Dialog Backdrop */
+dialog::backdrop {
+  background: rgba(43, 45, 66, 0.6);
+  backdrop-filter: blur(2px);
+}
+
+/* ===================================================================
+   LIVE PREVIEW TEMPLATE STYLES (MATCHES THE 10 PDF DESIGNS)
+   =================================================================== */
+
+.invoice-sheet {
+  background: #FFFFFF;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  min-height: 850px;
+  padding: 32px;
+  border: 2px solid var(--ink-charcoal);
+  box-shadow: 6px 6px 0px var(--ink-charcoal);
+  position: relative;
+}
+
+/* 1. Classic Ghibli Parchment */
+.tpl-ghibli {
+  background-color: #FBF8F1;
+  border: 4px double #2B2D42;
+}
+.tpl-ghibli .tpl-header-title {
+  font-family: 'Gaegu', cursive;
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #2B2D42;
+}
+.tpl-ghibli .tpl-table th {
+  background-color: #F4EAD4;
+  border: 2px solid #2B2D42;
+  color: #2B2D42;
+  font-weight: 700;
+}
+.tpl-ghibli .tpl-table td {
+  border: 1px solid #2B2D42;
+  background-color: #FFFFFF;
+}
+.tpl-ghibli .tpl-total-box {
+  background-color: #F4EAD4;
+  border: 2px solid #2B2D42;
+}
+
+/* 2. Vintage Ledger */
+.tpl-ledger {
+  background-color: #F7FAF8;
+  border: 2px solid #354F52;
+  font-family: 'Space Mono', monospace;
+}
+.tpl-ledger .tpl-header-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2F3E46;
+  border-bottom: 2px solid #354F52;
+}
+.tpl-ledger .tpl-table th {
+  background-color: #E2ECE5;
+  color: #2F3E46;
+  border-top: 2px solid #354F52;
+  border-bottom: 2px solid #354F52;
+  border-left: 1px solid #CAD2C5;
+  border-right: 1px solid #CAD2C5;
+}
+.tpl-ledger .tpl-table td {
+  border: 1px solid #CAD2C5;
+  background-color: #FAFDFB;
+}
+.tpl-ledger .tpl-total-box {
+  background-color: #E2ECE5;
+  border: 2px solid #354F52;
+}
+
+/* 3. Cozy Cottage */
+.tpl-cottage {
+  background-color: #FCFDF9;
+  border: 3px solid #5B8266;
+  border-radius: 16px;
+}
+.tpl-cottage .tpl-header-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #5B8266;
+}
+.tpl-cottage .tpl-table th {
+  background-color: #5B8266;
+  color: #FFFFFF;
+  border: 1px solid #5B8266;
+}
+.tpl-cottage .tpl-table td {
+  border-bottom: 1px solid #D2DFD6;
+  border-left: 1px solid #E8F0EA;
+  border-right: 1px solid #E8F0EA;
+}
+.tpl-cottage .tpl-total-box {
+  background-color: #F1F6F2;
+  border: 2px solid #5B8266;
+  border-radius: 12px;
+}
+
+/* 4. Tokyo Monospace */
+.tpl-tokyo {
+  background-color: #FFFFFF;
+  border: 2px dashed #2B2D42;
+  font-family: 'Space Mono', monospace;
+}
+.tpl-tokyo .tpl-header-title {
+  font-size: 1.7rem;
+  letter-spacing: 2px;
+  color: #2B2D42;
+}
+.tpl-tokyo .tpl-table th {
+  background-color: #F1F1F1;
+  border-top: 1px dashed #2B2D42;
+  border-bottom: 1px dashed #2B2D42;
+  color: #000000;
+}
+.tpl-tokyo .tpl-table td {
+  border-bottom: 1px dotted #888888;
+}
+.tpl-tokyo .tpl-total-box {
+  border: 1px dashed #2B2D42;
+  background-color: #FAFAFA;
+}
+
+/* 5. Sunset Terracotta */
+.tpl-terracotta {
+  background-color: #FFFDF9;
+  border: 3px solid #D46A43;
+}
+.tpl-terracotta .tpl-header-title {
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: #D46A43;
+  letter-spacing: 1px;
+}
+.tpl-terracotta .tpl-table th {
+  background-color: #D46A43;
+  color: #FFFFFF;
+  border: 1px solid #D46A43;
+}
+.tpl-terracotta .tpl-table td {
+  border: 1px solid #F1D4C9;
+}
+.tpl-terracotta .tpl-total-box {
+  background-color: #FDF3EF;
+  border: 2px solid #D46A43;
+}
+
+/* 6. Pastel Kraft */
+.tpl-kraft {
+  background-color: #F4EAD4;
+  border: 3px solid #8D7B68;
+}
+.tpl-kraft .tpl-header-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #594539;
+}
+.tpl-kraft .tpl-table th {
+  background-color: #DECAB3;
+  color: #4A3A2C;
+  border: 1px solid #8D7B68;
+}
+.tpl-kraft .tpl-table td {
+  border: 1px solid #D1BD9F;
+  background-color: #F9F4EB;
+}
+.tpl-kraft .tpl-total-box {
+  background-color: #DECAB3;
+  border: 2px solid #8D7B68;
+}
+
+/* 7. Japanese Hanko Stamp */
+.tpl-hanko {
+  background-color: #FFFFFF;
+  border: 2px solid #1A1A1A;
+}
+.tpl-hanko .tpl-header-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #1A1A1A;
+  letter-spacing: 3px;
+}
+.tpl-hanko .tpl-table th {
+  border-top: 2px solid #1A1A1A;
+  border-bottom: 2px solid #1A1A1A;
+  background-color: #F8F9FA;
+  color: #1A1A1A;
+}
+.tpl-hanko .tpl-table td {
+  border-bottom: 1px solid #CCCCCC;
+}
+.tpl-hanko .tpl-total-box {
+  border-top: 2px solid #1A1A1A;
+  border-bottom: 2px solid #1A1A1A;
+  background-color: #F8F9FA;
+}
+.tpl-hanko-seal {
+  width: 58px;
+  height: 58px;
+  border: 3px solid #C82333;
+  border-radius: 50%;
+  color: #C82333;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  transform: rotate(-12deg);
+}
+
+/* 8. Artisan Blueprint */
+.tpl-blueprint {
+  background-color: #F8FAFC;
+  border: 2px solid #3A506B;
+}
+.tpl-blueprint .tpl-header-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #3A506B;
+  letter-spacing: 1.5px;
+}
+.tpl-blueprint .tpl-table th {
+  background-color: #3A506B;
+  color: #FFFFFF;
+  border: 1px solid #3A506B;
+}
+.tpl-blueprint .tpl-table td {
+  border: 1px solid #CBD5E1;
+}
+.tpl-blueprint .tpl-total-box {
+  background-color: #E2E8F0;
+  border: 2px solid #3A506B;
+}
+
+/* 9. Editorial Notebook */
+.tpl-notebook {
+  background-color: #FEFEFA;
+  border-left: 8px solid #C84B31;
+  border-top: 1px solid #D3D3D3;
+  border-right: 1px solid #D3D3D3;
+  border-bottom: 1px solid #D3D3D3;
+}
+.tpl-notebook .tpl-header-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2D4263;
+}
+.tpl-notebook .tpl-table th {
+  border-bottom: 2px solid #C84B31;
+  color: #2D4263;
+}
+.tpl-notebook .tpl-table td {
+  border-bottom: 1px solid #E0E0E0;
+}
+.tpl-notebook .tpl-total-box {
+  border: 1px solid #C84B31;
+  background-color: #FDF9F9;
+}
+
+/* 10. Modern Minimal Chic */
+.tpl-minimal {
+  background-color: #FCFAF7;
+  border: 1px solid #111111;
+}
+.tpl-minimal .tpl-header-title {
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #111111;
+  letter-spacing: 4px;
+}
+.tpl-minimal .tpl-table th {
+  border-top: 2px solid #111111;
+  border-bottom: 1px solid #111111;
+  color: #111111;
+  text-transform: uppercase;
+}
+.tpl-minimal .tpl-table td {
+  border-bottom: 1px solid #EEEEEE;
+}
+.tpl-minimal .tpl-total-box {
+  border-top: 2px solid #111111;
+}
+
+/* Template Selector Gallery Cards */
+.template-card {
+  border: 2px solid #2B2D42;
+  box-shadow: 2px 2px 0px #2B2D42;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border-radius: 6px;
+  padding: 8px;
+  background: #FFFFFF;
+}
+
+.template-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 3px 3px 0px #2B2D42;
+}
+
+.template-card.active {
+  border-color: #D46A43;
+  box-shadow: 3px 3px 0px #D46A43;
+  background-color: #FFF6F2;
+  position: relative;
+}
+
+.template-card.active::after {
+  content: '✓';
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #D46A43;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: bold;
+  border: 2px solid #2B2D42;
+}

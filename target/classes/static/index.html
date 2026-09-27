@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invoice Koubou (請求工房) — Multi-Template Billing Studio</title>
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            parchment: '#FAF7F2',
+            cardParchment: '#F4EAD4',
+            charcoal: '#2B2D42',
+            matcha: '#5B8266',
+            terracotta: '#D46A43',
+            denim: '#3A506B',
+            mustard: '#E9C46A'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Retro Stylesheet -->
+  <link rel="stylesheet" href="/css/retro.css" />
+</head>
+<body class="p-3 md:p-6">
+
+  <div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Top Anime / Retro Masthead -->
+    <header class="retro-card-parchment p-5 relative overflow-hidden">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center space-x-2">
+            <span class="text-xs bg-[#2B2D42] text-[#F4EAD4] font-bold px-2 py-0.5 rounded font-mono uppercase tracking-wider">Ver 1.0 • Studio Ed.</span>
+            <span class="text-xs font-bold text-[#D46A43] tracking-widest font-heading text-base">請求工房 • KOUBOU</span>
+          </div>
+          <h1 class="text-3xl md:text-4xl font-black font-display text-[#2B2D42] tracking-tight mt-1 flex items-center gap-2">
+            <span>紙・INVOICE KOUBOU</span>
+            <span class="text-sm font-normal font-mono bg-[#E9C46A] text-[#2B2D42] px-2 py-1 border-2 border-[#2B2D42] rounded-md shadow-[2px_2px_0px_#2B2D42]">10 Retro Templates</span>
+          </h1>
+          <p class="text-sm text-[#3A506B] font-medium mt-0.5">Final Year Diploma Project — Multi-Template Invoice Generator &amp; Billing Management System</p>
+        </div>
+
+        <!-- Business Profile Widget & Quick Action -->
+        <div class="flex items-center gap-3">
+          <button id="btnOpenProfile" class="retro-btn retro-btn-outline text-sm gap-2" title="Edit Business Profile">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            <span id="headerBusinessName">Studio Tonari</span>
+          </button>
+          <button id="btnQuickCreateInvoice" class="retro-btn retro-btn-terracotta text-sm gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>New Invoice</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="flex border-b-2 border-[#2B2D42] gap-1 overflow-x-auto pb-[2px]" aria-label="Main Navigation">
+      <button class="retro-tab active flex items-center gap-2" data-tab="dashboard">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+        <span>Dashboard</span>
+      </button>
+      <button class="retro-tab flex items-center gap-2" data-tab="create">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        <span>Create Invoice</span>
+      </button>
+      <button class="retro-tab flex items-center gap-2" data-tab="history">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span>Invoice History</span>
+      </button>
+      <button class="retro-tab flex items-center gap-2" data-tab="clients">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        <span>Clients</span>
+      </button>
+    </nav>
+
+    <!-- ============================================================= -->
+    <!-- TAB 1: DASHBOARD -->
+    <!-- ============================================================= -->
+    <section id="tab-dashboard" class="tab-content space-y-6">
+      <!-- 3 Retro Metric Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Card 1: Revenue -->
+        <div class="retro-card p-5 bg-[#F4F9F5] border-l-8 border-l-[#5B8266]">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-[#5B8266]">Total Revenue Collected</span>
+            <span class="retro-badge retro-badge-paid font-mono text-[10px]">PAID</span>
+          </div>
+          <div class="text-3xl font-black font-mono text-[#2B2D42] mt-3" id="statRevenue">&#8377; 0.00</div>
+          <div class="text-xs text-[#555] mt-1 font-medium">Sum of all successfully settled invoices</div>
+        </div>
+
+        <!-- Card 2: Total Invoices -->
+        <div class="retro-card p-5 bg-[#F5F8FA] border-l-8 border-l-[#3A506B]">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-[#3A506B]">Total Invoices Generated</span>
+            <span class="text-xs font-bold font-mono px-2 py-0.5 bg-[#3A506B] text-white rounded">ALL TIME</span>
+          </div>
+          <div class="text-3xl font-black font-mono text-[#2B2D42] mt-3" id="statTotalInvoices">0</div>
+          <div class="text-xs text-[#555] mt-1 font-medium">Billed across 10 selectable layout engines</div>
+        </div>
+
+        <!-- Card 3: Unpaid Invoices -->
+        <div class="retro-card p-5 bg-[#FFF7F5] border-l-8 border-l-[#D46A43]">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold uppercase tracking-wider text-[#D46A43]">Pending / Unpaid Invoices</span>
+            <span class="retro-badge retro-badge-unpaid font-mono text-[10px]">ACTION</span>
+          </div>
+          <div class="text-3xl font-black font-mono text-[#D46A43] mt-3" id="statUnpaidInvoices">0</div>
+          <div class="text-xs text-[#555] mt-1 font-medium">Awaiting client disbursement and clearance</div>
+        </div>
+      </div>
+
+      <!-- Quick Actions Bar & Recent Invoices -->
+      <div class="retro-card p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b-2 border-[#2B2D42]">
+          <div>
+            <h2 class="text-xl font-bold font-display text-[#2B2D42]">Recent Billing Activity</h2>
+            <p class="text-xs text-[#555]">Overview of latest generated invoices and their settlement status</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btnDashboardAddClient" class="retro-btn retro-btn-outline text-xs gap-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+              <span>Quick Add Client</span>
+            </button>
+            <button id="btnRefreshDashboard" class="retro-btn retro-btn-primary text-xs gap-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              <span>Refresh</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Recent Invoices Table -->
+        <div class="overflow-x-auto mt-4">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-[#F4EAD4] border-2 border-[#2B2D42] text-xs uppercase font-bold text-[#2B2D42]">
+              <tr>
+                <th class="p-3">Invoice #</th>
+                <th class="p-3">Client</th>
+                <th class="p-3">Date</th>
+                <th class="p-3">Template Style</th>
+                <th class="p-3 text-right">Amount (&#8377;)</th>
+                <th class="p-3 text-center">Status</th>
+                <th class="p-3 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="dashboardRecentTableBody" class="divide-y border-2 border-t-0 border-[#2B2D42]">
+              <!-- Dynamically rendered -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- TAB 2: CREATE INVOICE (SPLIT FORM & LIVE HTML PREVIEW) -->
+    <!-- ============================================================= -->
+    <section id="tab-create" class="tab-content hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- LEFT COLUMN: FORM CONTROLS (7 Cols on desktop) -->
+        <div class="lg:col-span-6 space-y-6">
+          <form id="invoiceForm" class="retro-card p-6 space-y-6">
+            <div class="flex items-center justify-between pb-3 border-b-2 border-[#2B2D42]">
+              <div>
+                <h2 class="text-xl font-bold font-display text-[#2B2D42]">Invoice Builder</h2>
+                <p class="text-xs text-[#555]">Configure client, items, tax rates, and design template</p>
+              </div>
+              <span class="text-xs font-mono font-bold bg-[#E9C46A] px-2 py-1 border border-[#2B2D42] rounded">Real-Time GST (18%)</span>
+            </div>
+
+            <!-- Client Selection & Quick Add -->
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <label for="selectClient" class="text-xs font-bold uppercase tracking-wider text-[#2B2D42]">Select Client *</label>
+                <button type="button" id="btnOpenNewClientFromForm" class="text-xs font-bold text-[#D46A43] hover:underline flex items-center gap-1">
+                  + Add New Client
+                </button>
+              </div>
+              <select id="selectClient" class="retro-input w-full" required>
+                <option value="">-- Choose a registered client --</option>
+              </select>
+            </div>
+
+            <!-- Invoice Details: Number, Date, Due Date, Status -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="inputInvoiceNumber" class="text-xs font-bold uppercase tracking-wider text-[#2B2D42]">Invoice # (Auto-generated)</label>
+                <input type="text" id="inputInvoiceNumber" class="retro-input w-full font-mono mt-1" placeholder="e.g. INV-2026-001" />
+              </div>
+              <div>
+                <label for="selectStatus" class="text-xs font-bold uppercase tracking-wider text-[#2B2D42]">Payment Status</label>
+                <select id="selectStatus" class="retro-input w-full mt-1">
+                  <option value="UNPAID">UNPAID (Pending)</option>
+                  <option value="PAID">PAID (Settled)</option>
+                  <option value="DRAFT">DRAFT</option>
+                </select>
+              </div>
+              <div>
+                <label for="inputInvoiceDate" class="text-xs font-bold uppercase tracking-wider text-[#2B2D42]">Invoice Date *</label>
+                <input type="date" id="inputInvoiceDate" class="retro-input w-full mt-1" required />
+              </div>
+              <div>
+                <label for="inputDueDate" class="text-xs font-bold uppercase tracking-wider text-[#2B2D42]">Due Date *</label>
+                <input type="date" id="inputDueDate" class="retro-input w-full mt-1" required />
+              </div>
+            </div>
+
+            <!-- 10 Selectable Design Template Gallery -->
+            <div class="space-y-2 pt-2 border-t-2 border-[#2B2D42]">
+              <div class="flex items-center justify-between">
+                <label class="text-xs font-bold uppercase tracking-wider text-[#2B2D42]">Choose 1 of 10 Layout Templates *</label>
+                <span id="activeTemplateBadge" class="text-xs font-bold font-mono text-[#D46A43]">#1 Classic Ghibli Parchment</span>
+              </div>
+              
+              <!-- 10 Visual Template Selection Cards -->
+              <div class="grid grid-cols-2 sm:grid-cols-5 gap-2" id="templateGallery">
+                <div class="template-card active" data-tpl="1">
+                  <div class="h-10 bg-[#FAF7F2] border border-[#2B2D42] rounded flex items-center justify-center font-serif text-[10px] font-bold text-[#2B2D42]">Ghibli</div>
+                  <div class="text-[10px] font-bold mt-1 text-center truncate">1. Ghibli</div>
+                </div>
+                <div class="template-card" data-tpl="2">
+                  <div class="h-10 bg-[#E2ECE5] border border-[#354F52] rounded flex items-center justify-center font-mono text-[10px] font-bold text-[#2F3E46]">Ledger</div>
+                  <div class="text-[10px] font-bold mt-1 text-center truncate">2. Ledger</div>
+                </div>
+                <div class="template-card" data-tpl="3">
+                  <div class="h-10 bg-[#FCFDF9] border-2 border-[#5B8266] rounded-lg flex items-center justify-center text-[10px] font-bold text-[#5B8266]">Cottage</div>
+                  <div class="text-[10px] font-bold mt-1 text-center truncate">3. Cottage</div>
+                </div>
+                <div class="template-card" data-tpl="4">
+                  <div class="h-10 bg-[#FFFFFF] border border-dashed border-[#2B2D42] rounded flex items-center justify-center font-mono text-[10px] font-bold text-[#000]">Tokyo</div>
+                  <div class="text-[10px] font-bold mt-1 text-center truncate">4. Tokyo</div>
+                </div>
+                <div class="template-card" data-tpl="5">
+                  <div class="h-10 bg-[#FDF3EF] border-2 border-[#D46A43] rounded flex items-center justify-center text-[10px] font-bold text-[#D46A43]">Sunset</div>
+                  <div class="text-[10px] font-bold mt-1 text-center truncate">5. Sunset</div>
+                </div>
+                <div class="template-card" data-tpl="6">
+                  <div class="h-10 bg-[#DECAB3] border border-[#8D7B68] rounded flex items-center justify-center text-[10px] font-bold text-[#4A3A2C]">Kraft</div>
+                  <div class="text-[10px] font-bold mt-1 text-center truncate">6. Kraft</div>
+                </div>
+                <div class="template-card" data-tpl="7">
+                  <div class="h-10 bg-[#FFFFFF] border border-[#1A1A1A] rounded flex items-center justify-center text-[10px] font-bold text-[#C82333]">Hanko 印</div>
+                  <div class="text-[10px] font-bold mt-1 text-center truncate">7. Hanko</div>
+                </div>
+                <div class="template-card" data-tpl="8">
+                  <div class="h-10 bg-[#3A506B] text-white rounded flex items-center justify-center text-[10px] font-bold font-mono">Blueprint</div>
+                  <div class="text-[10px] font-bold mt-1 text-center truncate">8. Blueprint</div>
+                </div>
+                <div class="template-card" data-tpl="9">
+                  <div class="h-10 bg-[#FEFEFA] border-l-4 border-l-[#C84B31] border border-[#D3D3D3] rounded flex items-center justify-center text-[10px] font-bold text-[#2D4263]">Notebook</div>
+                  <div class="text-[10px] font-bold mt-1 text-center truncate">9. Notebook</div>
+                </div>
+                <div class="template-card" data-tpl="10">
+                  <div class="h-10 bg-[#111111] text-white rounded flex items-center justify-center text-[10px] font-bold tracking-widest">MINIMAL</div>
+                  <div class="text-[10px] font-bold mt-1 text-center truncate">10. Minimal</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Line Items Table -->
+            <div class="space-y-3 pt-2 border-t-2 border-[#2B2D42]">
+              <div class="flex items-center justify-between">
+                <label class="text-xs font-bold uppercase tracking-wider text-[#2B2D42]">Invoice Line Items *</label>
+                <button type="button" id="btnAddItemRow" class="retro-btn retro-btn-matcha retro-btn-sm gap-1">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                  <span>Add Line Item</span>
+                </button>
+              </div>
+
+              <!-- Line Items Container -->
+              <div id="itemsContainer" class="space-y-2">
+                <!-- Dynamically populated rows -->
+              </div>
+            </div>
+
+            <!-- Notes & Terms -->
+            <div class="space-y-1 pt-2 border-t-2 border-[#2B2D42]">
+              <label for="inputNotes" class="text-xs font-bold uppercase tracking-wider text-[#2B2D42]">Notes / Payment Instructions</label>
+              <textarea id="inputNotes" rows="2" class="retro-input w-full text-xs" placeholder="e.g. Please send payment via NEFT/IMPS or UPI to registered bank account. Thank you!"></textarea>
+            </div>
+
+            <!-- Calculation Summary Box -->
+            <div class="retro-card-parchment p-4 space-y-2 font-mono text-sm">
+              <div class="flex justify-between">
+                <span class="text-xs font-bold text-[#555]">Taxable Subtotal:</span>
+                <span class="font-bold" id="formSubtotal">&#8377; 0.00</span>
+              </div>
+              <div class="flex justify-between text-xs">
+                <span class="text-[#555]">CGST (9.0%):</span>
+                <span class="font-semibold" id="formCGST">&#8377; 0.00</span>
+              </div>
+              <div class="flex justify-between text-xs">
+                <span class="text-[#555]">SGST (9.0%):</span>
+                <span class="font-semibold" id="formSGST">&#8377; 0.00</span>
+              </div>
+              <div class="border-t-2 border-[#2B2D42] pt-2 flex justify-between text-base font-bold text-[#2B2D42]">
+                <span>Grand Total:</span>
+                <span class="text-lg font-black text-[#D46A43]" id="formGrandTotal">&#8377; 0.00</span>
+              </div>
+            </div>
+
+            <!-- Form Action Buttons -->
+            <div class="flex flex-wrap items-center gap-3 pt-2">
+              <button type="submit" id="btnSaveInvoice" class="retro-btn retro-btn-primary flex-1 gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+                <span>Save Invoice</span>
+              </button>
+              <button type="button" id="btnSaveAndDownloadPdf" class="retro-btn retro-btn-terracotta flex-1 gap-2">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                <span>Save &amp; Download PDF</span>
+              </button>
+              <button type="button" id="btnResetForm" class="retro-btn retro-btn-outline text-xs px-3 py-2">
+                Reset
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- RIGHT COLUMN: LIVE HTML PREVIEW (6 Cols on desktop) -->
+        <div class="lg:col-span-6 sticky top-6">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center gap-2">
+              <span class="w-3 h-3 bg-red-500 rounded-full border border-black animate-pulse"></span>
+              <span class="text-xs font-bold uppercase tracking-wider text-[#2B2D42]">Live Responsive Preview</span>
+            </div>
+            <button id="btnFullscreenPreview" class="text-xs font-bold text-[#3A506B] hover:underline flex items-center gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+              <span>Fullscreen Sheet</span>
+            </button>
+          </div>
+
+          <!-- Live Preview Canvas -->
+          <div id="livePreviewContainer" class="max-h-[850px] overflow-y-auto p-2 bg-[#EBE5DA] rounded-lg border-2 border-[#2B2D42] shadow-[3px_3px_0px_#2B2D42]">
+            <div id="liveInvoiceSheet" class="invoice-sheet tpl-ghibli">
+              <!-- Live Sheet Content populated via JavaScript -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- TAB 3: INVOICE HISTORY -->
+    <!-- ============================================================= -->
+    <section id="tab-history" class="tab-content hidden space-y-6">
+      <div class="retro-card p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b-2 border-[#2B2D42]">
+          <div>
+            <h2 class="text-xl font-bold font-display text-[#2B2D42]">Invoice Archives &amp; Management</h2>
+            <p class="text-xs text-[#555]">Manage, filter, toggle payment status, or export individual PDF documents</p>
+          </div>
+          <!-- Filter Controls -->
+          <div class="flex items-center gap-2">
+            <input type="text" id="filterSearch" class="retro-input text-xs w-48" placeholder="Search by # or Client..." />
+            <select id="filterStatus" class="retro-input text-xs">
+              <option value="ALL">All Status</option>
+              <option value="PAID">PAID</option>
+              <option value="UNPAID">UNPAID</option>
+              <option value="DRAFT">DRAFT</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto mt-4">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-[#F4EAD4] border-2 border-[#2B2D42] text-xs uppercase font-bold text-[#2B2D42]">
+              <tr>
+                <th class="p-3">Invoice #</th>
+                <th class="p-3">Client</th>
+                <th class="p-3">Date</th>
+                <th class="p-3">Due Date</th>
+                <th class="p-3">Template</th>
+                <th class="p-3 text-right">Amount (&#8377;)</th>
+                <th class="p-3 text-center">Status</th>
+                <th class="p-3 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="historyTableBody" class="divide-y border-2 border-t-0 border-[#2B2D42]">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- TAB 4: CLIENTS MANAGEMENT -->
+    <!-- ============================================================= -->
+    <section id="tab-clients" class="tab-content hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        
+        <!-- Add Client Form (4 Cols) -->
+        <div class="lg:col-span-4">
+          <form id="clientForm" class="retro-card p-6 space-y-4">
+            <h2 class="text-lg font-bold font-display text-[#2B2D42] pb-2 border-b-2 border-[#2B2D42]">Register New Client</h2>
+            
+            <div>
+              <label for="newClientName" class="text-xs font-bold uppercase tracking-wider text-[#2B2D42]">Client / Company Name *</label>
+              <input type="text" id="newClientName" class="retro-input w-full mt-1" placeholder="e.g. Kiki's Flying Bakery" required />
+            </div>
+
+            <div>
+              <label for="newClientEmail" class="text-xs font-bold uppercase tracking-wider text-[#2B2D42]">Email Address *</label>
+              <input type="email" id="newClientEmail" class="retro-input w-full mt-1" placeholder="client@domain.com" required />
+            </div>
+
+            <div>
+              <label for="newClientPhone" class="text-xs font-bold uppercase tracking-wider text-[#2B2D42]">Phone / Contact</label>
+              <input type="tel" id="newClientPhone" class="retro-input w-full mt-1" placeholder="+91 98765 43210" />
+            </div>
+
+            <div>
+              <label for="newClientGST" class="text-xs font-bold uppercase tracking-wider text-[#2B2D42]">GSTIN Number</label>
+              <input type="text" id="newClientGST" class="retro-input w-full mt-1 font-mono uppercase" placeholder="27AAACK1010A1Z1" />
+            </div>
+
+            <div>
+              <label for="newClientAddress" class="text-xs font-bold uppercase tracking-wider text-[#2B2D42]">Billing Address</label>
+              <textarea id="newClientAddress" rows="2" class="retro-input w-full text-xs mt-1" placeholder="Street, City, State, PIN"></textarea>
+            </div>
+
+            <button type="submit" class="retro-btn retro-btn-primary w-full gap-1">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+              <span>Save Client Record</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Client List Grid (8 Cols) -->
+        <div class="lg:col-span-8 retro-card p-6">
+          <div class="flex items-center justify-between pb-3 border-b-2 border-[#2B2D42]">
+            <h2 class="text-lg font-bold font-display text-[#2B2D42]">Client Directory</h2>
+            <span id="clientCountBadge" class="text-xs font-mono font-bold bg-[#FAF7F2] px-2 py-0.5 border border-[#2B2D42] rounded">0 Clients</span>
+          </div>
+
+          <div id="clientsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+            <!-- Dynamically populated client cards -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================= -->
+    <!-- DIALOG: BUSINESS PROFILE SETTINGS -->
+    <!-- ============================================================= -->
+    <dialog id="profileModal" class="retro-card p-6 max-w-md w-full">
+      <form id="profileForm" method="dialog" class="space-y-4">
+        <div class="flex items-center justify-between pb-2 border-b-2 border-[#2B2D42]">
+          <h3 class="text-lg font-bold font-display text-[#2B2D42]">Business &amp; Issuer Profile</h3>
+          <button type="button" id="btnCloseProfileModal" class="text-sm font-bold p-1 hover:bg-gray-200 rounded">&times;</button>
+        </div>
+
+        <div>
+          <label for="profBusinessName" class="text-xs font-bold uppercase text-[#2B2D42]">Business / Studio Name *</label>
+          <input type="text" id="profBusinessName" class="retro-input w-full mt-1" required />
+        </div>
+
+        <div>
+          <label for="profEmail" class="text-xs font-bold uppercase text-[#2B2D42]">Billing Email *</label>
+          <input type="email" id="profEmail" class="retro-input w-full mt-1" required />
+        </div>
+
+        <div>
+          <label for="profPhone" class="text-xs font-bold uppercase text-[#2B2D42]">Phone / Tel</label>
+          <input type="text" id="profPhone" class="retro-input w-full mt-1" />
+        </div>
+
+        <div>
+          <label for="profGst" class="text-xs font-bold uppercase text-[#2B2D42]">GSTIN</label>
+          <input type="text" id="profGst" class="retro-input w-full mt-1 font-mono uppercase" />
+        </div>
+
+        <div>
+          <label for="profAddress" class="text-xs font-bold uppercase text-[#2B2D42]">Registered Studio Address</label>
+          <textarea id="profAddress" rows="2" class="retro-input w-full text-xs mt-1"></textarea>
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-2 border-t-2 border-[#2B2D42]">
+          <button type="button" id="btnCancelProfile" class="retro-btn retro-btn-outline text-xs">Cancel</button>
+          <button type="submit" id="btnSaveProfile" class="retro-btn retro-btn-primary text-xs">Save Profile</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- ============================================================= -->
+    <!-- DIALOG: FULLSCREEN PREVIEW & EXPORT -->
+    <!-- ============================================================= -->
+    <dialog id="previewModal" class="retro-card p-4 max-w-4xl w-full max-h-[92vh] overflow-y-auto">
+      <div class="flex items-center justify-between pb-3 border-b-2 border-[#2B2D42] mb-4">
+        <div class="flex items-center gap-2">
+          <span class="text-sm font-bold font-display text-[#2B2D42]">Document Preview</span>
+          <span id="previewModalTemplateName" class="text-xs font-mono font-bold bg-[#E9C46A] px-2 py-0.5 border border-[#2B2D42] rounded"></span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="btnModalPrint" class="retro-btn retro-btn-outline text-xs gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+            <span>Print</span>
+          </button>
+          <button id="btnModalDownloadPdf" class="retro-btn retro-btn-terracotta text-xs gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+            <span>Download PDF</span>
+          </button>
+          <button id="btnClosePreviewModal" class="retro-btn retro-btn-outline text-xs">&times;</button>
+        </div>
+      </div>
+      <div id="modalSheetContainer" class="p-2 bg-[#EBE5DA] rounded">
+        <!-- Rendered sheet inserted here -->
+      </div>
+    </dialog>
+
+    <!-- Footer -->
+    <footer class="text-center py-6 text-xs text-[#555] font-medium border-t-2 border-[#2B2D42] mt-10">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-2">
+        <span>紙・INVOICE KOUBOU (請求工房) &copy; 2026. Handcrafted Retro Anime Billing Suite.</span>
+        <span class="font-mono text-[#3A506B]">Spring Boot 3 &bull; OpenPDF &bull; Flying Saucer &bull; Tailwind CSS</span>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Main Vanilla JavaScript Application -->
+  <script src="/js/app.js"></script>
+</body>
+</html>
